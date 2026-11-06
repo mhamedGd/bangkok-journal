@@ -230,3 +230,38 @@ input::file-selector-button { margin-right: 10px; padding: 6px 9px; border: 1px 
   .icon-button { min-width: 35px; min-height: 35px; }
 }
 @media(prefers-reduced-motion:no-preference) { .button, .map-button { transition: background-color .12s, color .12s; } }
+/* Collapsible journal panel; the map occupies the complete available viewport. */
+.layout { height: 100dvh; min-height: 0; }
+.layout.sidebar-collapsed { grid-template-columns: 0 minmax(0,1fr); }
+.sidebar { grid-column: 1; }
+.map-section { grid-column: 2; min-height: 0; }
+.intro { padding-top: 78px; }
+.sidebar-toggle { position: fixed; top: 22px; left: 22px; z-index: 40; width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 1px solid #777; border-radius: 0; background: #090909; color: #eee; font: 19px var(--mono); }
+.sidebar-toggle:hover { background: #eee; color: #090909; }
+.sidebar-collapsed .map-heading { left: 76px; }
+.owner-floating { position: fixed; right: 22px; bottom: max(28px,env(safe-area-inset-bottom)); z-index: 35; min-height: 40px; background: #090909 !important; border-color: #777 !important; }
+.owner-floating:hover { background: #eee !important; color: #090909; }
+.map-region-note { bottom: 82px; }
+.detail { bottom: 88px; }
+.sidebar-backdrop { display: none; }
+@media(max-width:1000px) { .intro { padding-top: 76px; } .sidebar-toggle { top: 18px; left: 18px; } }
+@media(max-width:650px) {
+  .layout, .layout.sidebar-collapsed { display: grid; grid-template-columns: minmax(0,1fr); height: 100dvh; }
+  .map-section { grid-column: 1; order: initial; height: 100dvh; min-height: 0; border: 0; }
+  .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 30; display: flex; width: min(330px,calc(100% - 56px)); border-right: 1px solid #777; background: #090909; }
+  .sidebar .intro { order: initial; padding: 76px 20px 23px; }
+  .sidebar .trip-meta { position: static; flex-direction: row; align-items: center; gap: 12px; margin-top: 18px; }
+  .sidebar .meta-dot { display: inline; }
+  .sidebar .journal-tools { order: initial; border-top: 1px solid #333; }
+  .sidebar .memory-list { order: initial; min-height: 0; overflow-y: auto; }
+  .sidebar .sidebar-footer { order: initial; flex-wrap: wrap; }
+  .sidebar-backdrop { position: fixed; inset: 0; z-index: 25; display: block; border: 0; padding: 0; background: #0009; }
+  .sidebar-toggle { top: 16px; left: 16px; }
+  .map-heading, .sidebar-collapsed .map-heading { left: 70px; }
+  .map-title { font-size: 15px; }
+  .map-title > span { font-size: 10px; margin-left: 5px; }
+  .owner-floating { right: 16px; bottom: max(24px,env(safe-area-inset-bottom)); padding: 10px 12px; font-size: 9px; }
+  .detail { bottom: 85px; }
+}
+.toast { bottom: 86px; }
+@media(max-width:650px) { .sidebar .sidebar-footer { padding-bottom: 84px; } }

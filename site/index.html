@@ -17,12 +17,11 @@
   <script type="module" src="app.js"></script>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="./" aria-label="Bangkok journal home"><span class="brand-mark" aria-hidden="true">⌖</span><span>Trip journal</span></a>
-    <div class="header-actions"><span class="public-label"><span></span> Public journal</span><button id="owner-button" class="button quiet"><span aria-hidden="true">↗</span> Owner access</button></div>
-  </header>
+  <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-controls="memories-sidebar" aria-expanded="true" aria-label="Hide memories sidebar">☰</button>
+  <button id="owner-button" class="button quiet owner-floating" type="button"><span aria-hidden="true">↗</span> Owner access</button>
+  <button id="sidebar-backdrop" class="sidebar-backdrop" type="button" aria-label="Close memories sidebar" hidden></button>
   <main class="layout">
-    <aside class="sidebar" aria-label="Trip memories">
+    <aside id="memories-sidebar" class="sidebar" aria-label="Trip memories">
       <div class="intro"><div class="eyebrow"><span class="country-flag" aria-hidden="true"></span> THAILAND</div><h1>Bangkok</h1><div class="trip-meta"><span id="memory-count">0 memories</span><span class="meta-dot">·</span><span id="day-count">0 days</span></div></div>
       <div class="journal-tools"><div class="section-line"><h2>Memories</h2><button id="add-button" class="button primary compact" hidden>＋ Add memory</button></div><label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search memories…" aria-label="Search memories"></label><div class="filters"><label class="sr-only" for="day-filter">Filter by day</label><select id="day-filter"><option value="">All days</option></select><label class="sr-only" for="tag-filter">Filter by category</label><select id="tag-filter"><option value="">All categories</option><option>Food & drink</option><option>Exploring</option><option>Culture</option><option>Stay</option><option value="Little things">Other</option></select></div></div>
       <div id="memory-list" class="memory-list" aria-live="polite"></div>

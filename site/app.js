@@ -31,6 +31,27 @@ function updatePanBounds() {
 }
 map.on('zoomend resize',updatePanBounds);
 updatePanBounds();
+const sidebarBreakpoint = matchMedia('(max-width: 650px)');
+let sidebarOpen = !sidebarBreakpoint.matches;
+function setSidebarOpen(open) {
+  sidebarOpen = open;
+  $('.layout').classList.toggle('sidebar-collapsed', !open);
+  $('#memories-sidebar').hidden = !open;
+  $('#sidebar-toggle').setAttribute('aria-expanded', String(open));
+  $('#sidebar-toggle').setAttribute('aria-label', open ? 'Hide memories sidebar' : 'Show memories sidebar');
+  $('#sidebar-backdrop').hidden = !open || !sidebarBreakpoint.matches;
+  $('.map-section').inert = open && sidebarBreakpoint.matches;
+  requestAnimationFrame(() => map.invalidateSize({animate:false}));
+}
+$('#sidebar-toggle').onclick = () => setSidebarOpen(!sidebarOpen);
+$('#sidebar-backdrop').onclick = () => { setSidebarOpen(false); $('#sidebar-toggle').focus(); };
+sidebarBreakpoint.addEventListener('change', () => setSidebarOpen(!sidebarBreakpoint.matches));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && sidebarBreakpoint.matches && sidebarOpen && !document.querySelector('dialog[open]')) {
+    setSidebarOpen(false); $('#sidebar-toggle').focus();
+  }
+});
+setSidebarOpen(sidebarOpen);
 const vectorLayer = L.maplibreGL({
   style: new URL('map-style.json', document.baseURI).href,
   attributionControl: { customAttribution: '<a href="https://openfreemap.org">OpenFreeMap</a> · &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> / <a href="https://openmaptiles.org">OpenMapTiles</a> · Rail: <a href="https://namtang-api.otp.go.th/opendata">OTP</a> · Boundary: <a href="https://www.geoboundaries.org">geoBoundaries</a>' },
@@ -159,6 +180,7 @@ function renderMarkers(memories) {
 }
 function selectMemory(id, fly = true) {
   const memory = state.journal.memories.find(m => m.id === id); if (!memory) return;
+  if (sidebarBreakpoint.matches) setSidebarOpen(false);
   map.closePopup(); state.selected = id; render();
   const detail = $('#detail'); detail.replaceChildren(); detail.hidden = false;
   const close = create('button','icon-button detail-close','×'); close.setAttribute('aria-label','Close memory'); close.onclick = closeDetail;
@@ -234,6 +256,7 @@ function beginMemory() {
   startPicking();
 }
 function startPicking() {
+  if (sidebarBreakpoint.matches) setSidebarOpen(false);
   closeDetail(); state.picking = true; $('#editor-dialog').close(); $('#place-picker').hidden = false; $('#map-hint').hidden = true; $('.map-section').classList.add('picking');
   if (innerWidth <= 650) $('.map-section').scrollIntoView({behavior:'smooth',block:'center'});
 }
