@@ -82,7 +82,7 @@ function render() {
   if (!memories.length) {
     const empty = create('div', 'empty-state');
     const drawing = create('div','empty-illustration'); drawing.setAttribute('aria-hidden','true'); drawing.append(create('span','ticket'),create('span','ticket front','✳'));
-    empty.append(drawing,create('h3',null,'The best souvenirs are stories.'),create('p',null,state.client ? 'Add your first memory, then choose its place on the map. A street, a temple, a table for two.' : 'This atlas is waiting for its first memory. Soon, these streets will hold photographs and stories.'));
+    empty.append(drawing,create('h3',null,'The best souvenirs are stories.'),create('p',null,state.client ? 'Add your first memory, then choose its place on the map. A street, a temple, a table for two.' : 'A map waiting for your Bangkok stories. Add your first memory to begin.'));
     const action = create('button','text-button',state.client ? '＋ Keep your first memory' : 'Owner? Start your story ↗'); action.type = 'button'; action.onclick = state.client ? beginMemory : openOwner; empty.append(action); list.append(empty);
   } else if (!visible.length) list.append(create('p','empty-results','No memories here yet. Try another day or search.'));
   else visible.forEach(memory => {
