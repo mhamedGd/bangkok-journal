@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0c0c0c">
-  <meta name="description" content="A personal map of Bangkok. Places, photographs, and the little things worth remembering.">
+  <meta name="description" content="Bangkok trip journal with location notes, photos, and rail lines.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://tiles.openfreemap.org https://raw.githubusercontent.com; connect-src 'self' https://api.github.com https://tiles.openfreemap.org; object-src 'none'; base-uri 'self'; form-action 'none'">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap">
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="vendor/maplibre-gl.css">
   <link rel="stylesheet" href="styles.css">
-  <title>My Bangkok — a personal atlas</title>
+  <title>Bangkok · Trip journal</title>
   <script src="vendor/leaflet.js" defer></script>
   <script src="vendor/maplibre-gl.js" defer></script>
   <script src="vendor/leaflet-maplibre-gl.js" defer></script>
@@ -19,44 +19,44 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="My Bangkok home"><span class="brand-mark" aria-hidden="true">✳</span><span>somewhere<span class="brand-dot">.</span></span><span class="brand-divider"></span><span class="brand-sub">THE TRAVEL JOURNAL</span></a>
-    <div class="header-actions"><span class="public-label"><span></span> A public little corner of the world</span><button id="owner-button" class="button quiet"><span aria-hidden="true">↗</span> Owner access</button></div>
+    <a class="brand" href="./" aria-label="Bangkok journal home"><span class="brand-mark" aria-hidden="true">✳</span><span>Trip journal</span></a>
+    <div class="header-actions"><span class="public-label"><span></span> Public journal</span><button id="owner-button" class="button quiet"><span aria-hidden="true">↗</span> Owner access</button></div>
   </header>
   <main class="layout">
     <aside class="sidebar" aria-label="Trip memories">
-      <div class="intro"><div class="eyebrow"><span class="country-flag" aria-hidden="true"></span> THAILAND · PERSONAL ATLAS</div><h1>My <em>Bangkok.</em></h1><p>Places I went.<br>Moments I brought home.</p><div class="trip-meta"><span id="memory-count">0 memories</span><span class="meta-dot">·</span><span id="day-count">a story in the making</span></div></div>
-      <div class="journal-tools"><div class="section-line"><h2>The memories</h2><button id="add-button" class="button primary compact" hidden>＋ Add memory</button></div><label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Find a place or a moment…" aria-label="Search memories"></label><div class="filters"><label class="sr-only" for="day-filter">Filter by day</label><select id="day-filter"><option value="">All days</option></select><label class="sr-only" for="tag-filter">Filter by category</label><select id="tag-filter"><option value="">All kinds of moments</option><option>Food & drink</option><option>Exploring</option><option>Culture</option><option>Stay</option><option>Little things</option></select></div></div>
+      <div class="intro"><div class="eyebrow"><span class="country-flag" aria-hidden="true"></span> THAILAND</div><h1>Bangkok</h1><div class="trip-meta"><span id="memory-count">0 memories</span><span class="meta-dot">·</span><span id="day-count">0 days</span></div></div>
+      <div class="journal-tools"><div class="section-line"><h2>Memories</h2><button id="add-button" class="button primary compact" hidden>＋ Add memory</button></div><label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search memories…" aria-label="Search memories"></label><div class="filters"><label class="sr-only" for="day-filter">Filter by day</label><select id="day-filter"><option value="">All days</option></select><label class="sr-only" for="tag-filter">Filter by category</label><select id="tag-filter"><option value="">All categories</option><option>Food & drink</option><option>Exploring</option><option>Culture</option><option>Stay</option><option value="Little things">Other</option></select></div></div>
       <div id="memory-list" class="memory-list" aria-live="polite"></div>
-      <footer class="sidebar-footer"><span>Made of places & little moments.</span><a id="repo-link" target="_blank" rel="noopener">On GitHub ↗</a></footer>
+      <footer class="sidebar-footer"><span>Public · owner edits only</span><a id="repo-link" target="_blank" rel="noopener">On GitHub ↗</a></footer>
     </aside>
     <section class="map-section" aria-label="Interactive map of Bangkok">
       <div id="map"></div>
-      <div class="map-heading"><span class="map-eyebrow">THE CITY OF ANGELS</span><span class="map-title">Bangkok <span lang="th">กรุงเทพฯ</span></span></div>
+      <div class="map-heading"><span class="map-eyebrow">THAILAND</span><span class="map-title">Bangkok <span lang="th">กรุงเทพฯ</span></span></div>
       <div class="map-controls"><button id="zoom-in" class="map-button" aria-label="Zoom in">＋</button><button id="zoom-out" class="map-button" aria-label="Zoom out">−</button><button id="fit-map" class="map-button" aria-label="Show all memories">⌖</button></div>
       <button id="rail-toggle" class="rail-toggle" type="button" aria-pressed="true" aria-label="Show rail and metro lines"><span class="rail-swatch" aria-hidden="true"></span><span>Rail & metro</span></button>
       <details class="rail-legend"><summary>Line colors</summary><div id="rail-legend-grid" class="rail-legend-grid"></div><small>Line colors and routes from Thailand’s Office of Transport and Traffic Policy and Planning.</small></details>
       <span class="map-region-note">BANGKOK CITY LIMITS</span>
-      <div id="map-hint" class="map-hint"><span class="hint-icon" aria-hidden="true">✳</span><span>A city full of stories.<br><strong>Yours belong here.</strong></span></div>
-      <div class="map-caption">13.7563° N &nbsp; 100.5018° E <span>ONE CITY, YOUR PERSPECTIVE</span></div>
+      <div id="map-hint" class="map-hint"><span class="hint-icon" aria-hidden="true">✳</span><span>Bangkok</span></div>
+      <div class="map-caption">13.7563° N &nbsp; 100.5018° E <span>BANGKOK</span></div>
       <div id="place-picker" class="place-picker" hidden><span>Tap anywhere on the map to place your memory.</span><button id="cancel-pick" class="button quiet">Cancel</button></div>
       <article id="detail" class="detail" hidden aria-label="Selected memory"></article>
     </section>
   </main>
   <div id="toast" class="toast" role="status" hidden></div>
   <dialog id="owner-dialog" class="dialog owner-dialog" aria-labelledby="owner-title">
-    <form id="owner-form"><div class="dialog-top"><span class="eyebrow">JUST FOR THE JOURNAL KEEPER</span><button type="button" class="icon-button" data-close aria-label="Close owner access">×</button></div><h2 id="owner-title">Your stories.<br><em>Your keys.</em></h2><p>Visitors can explore. Only <strong id="owner-name"></strong> can add or change memories.</p><div id="connect-fields"><label for="access-key">GitHub repository key</label><input id="access-key" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required><p class="field-help">Create a fine-grained key for <strong>bangkok-journal</strong> with <strong>Contents: Read and write</strong>. Leave other permissions unchanged.</p><a id="create-key" target="_blank" rel="noopener" class="text-link">Create your repository key on GitHub ↗</a><p class="key-note">Your key stays in memory in this tab. It is never saved in the journal or browser storage. Reloading locks editing again.</p></div><p id="owner-error" class="form-error" role="alert"></p><button id="connect-button" class="button primary" type="submit">Unlock my journal ↗</button><button id="disconnect-button" type="button" class="button secondary" hidden>Lock editing</button></form>
+    <form id="owner-form"><div class="dialog-top"><span class="eyebrow">EDITING ACCESS</span><button type="button" class="icon-button" data-close aria-label="Close owner access">×</button></div><h2 id="owner-title">Owner access</h2><p>Only <strong id="owner-name"></strong> can add or change memories.</p><div id="connect-fields"><label for="access-key">GitHub repository key</label><input id="access-key" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required><p class="field-help">Create a fine-grained key for <strong>bangkok-journal</strong> with <strong>Contents: Read and write</strong>. Leave other permissions unchanged.</p><a id="create-key" target="_blank" rel="noopener" class="text-link">Create your repository key on GitHub ↗</a><p class="key-note">Your key stays in memory in this tab. It is never saved in the journal or browser storage. Reloading locks editing again.</p></div><p id="owner-error" class="form-error" role="alert"></p><button id="connect-button" class="button primary" type="submit">Enable editing</button><button id="disconnect-button" type="button" class="button secondary" hidden>Lock editing</button></form>
   </dialog>
   <dialog id="editor-dialog" class="dialog editor-dialog" aria-labelledby="editor-title">
-    <form id="memory-form"><div class="dialog-top"><span class="eyebrow">A LITTLE PIECE OF BANGKOK</span><button type="button" class="icon-button" data-close aria-label="Close memory editor">×</button></div><h2 id="editor-title">Keep this <em>moment.</em></h2><div class="location-line"><span aria-hidden="true">⌖</span><span id="location-summary"></span><button id="change-location" class="text-button" type="button">Change on map</button></div>
-      <label for="memory-title">Give it a title</label><input id="memory-title" name="title" maxlength="120" placeholder="That evening by the river…" required>
-      <div class="form-row"><div><label for="memory-place">Place</label><input id="memory-place" name="place" maxlength="160" placeholder="A name, a street, a secret corner" required></div><div><label for="memory-date">Date</label><input id="memory-date" name="date" type="date" required></div></div>
-      <label for="memory-note">What do you want to remember?</label><textarea id="memory-note" name="note" rows="4" maxlength="12000" placeholder="The sounds, the taste, how it felt. The little things." required></textarea>
-      <label for="memory-tag">Kind of moment</label><select id="memory-tag" name="tag"><option>Little things</option><option>Food & drink</option><option>Exploring</option><option>Culture</option><option>Stay</option></select>
-      <label class="photo-drop" for="memory-photos"><span aria-hidden="true">＋</span><strong>Add a few photographs</strong><span>Up to 8 photos · resized for your journal</span><input id="memory-photos" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div id="photo-previews" class="photo-previews"></div>
+    <form id="memory-form"><div class="dialog-top"><span class="eyebrow">MEMORY DETAILS</span><button type="button" class="icon-button" data-close aria-label="Close memory editor">×</button></div><h2 id="editor-title">Add memory</h2><div class="location-line"><span aria-hidden="true">⌖</span><span id="location-summary"></span><button id="change-location" class="text-button" type="button">Change on map</button></div>
+      <label for="memory-title">Title</label><input id="memory-title" name="title" maxlength="120" placeholder="Memory title" required>
+      <div class="form-row"><div><label for="memory-place">Place</label><input id="memory-place" name="place" maxlength="160" placeholder="Place name or address" required></div><div><label for="memory-date">Date</label><input id="memory-date" name="date" type="date" required></div></div>
+      <label for="memory-note">Notes</label><textarea id="memory-note" name="note" rows="4" maxlength="12000" placeholder="Add notes…" required></textarea>
+      <label for="memory-tag">Category</label><select id="memory-tag" name="tag"><option value="Little things">Other</option><option>Food & drink</option><option>Exploring</option><option>Culture</option><option>Stay</option></select>
+      <label class="photo-drop" for="memory-photos"><span aria-hidden="true">＋</span><strong>Add photos</strong><span>Up to 8 photos</span><input id="memory-photos" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div id="photo-previews" class="photo-previews"></div>
       <p id="editor-error" class="form-error" role="alert"></p><div class="editor-bottom"><span id="save-hint">Public memory · saved to GitHub</span><button id="save-button" type="submit" class="button primary">Save memory ↗</button></div>
     </form>
   </dialog>
-  <dialog id="delete-dialog" class="dialog" aria-labelledby="delete-title"><div class="dialog-top"><span class="eyebrow">REMOVE A MEMORY</span><button class="icon-button" data-close aria-label="Cancel deletion">×</button></div><h2 id="delete-title">Leave this one behind?</h2><p>The memory will disappear from your map. Its earlier versions may remain in GitHub history.</p><p id="delete-error" class="form-error" role="alert"></p><div class="actions"><button id="cancel-delete" class="button secondary">Keep it</button><button id="confirm-delete" class="button danger">Delete memory</button></div></dialog>
+  <dialog id="delete-dialog" class="dialog" aria-labelledby="delete-title"><div class="dialog-top"><span class="eyebrow">REMOVE A MEMORY</span><button class="icon-button" data-close aria-label="Cancel deletion">×</button></div><h2 id="delete-title">Delete this memory?</h2><p>The memory will disappear from your map. Its earlier versions may remain in GitHub history.</p><p id="delete-error" class="form-error" role="alert"></p><div class="actions"><button id="cancel-delete" class="button secondary">Cancel</button><button id="confirm-delete" class="button danger">Delete memory</button></div></dialog>
   <dialog id="photo-dialog" class="photo-dialog" aria-label="Photograph"><button class="photo-close" data-close aria-label="Close photograph">×</button><img id="full-photo" alt=""></dialog>
   <noscript>This journal needs JavaScript to display its interactive map.</noscript>
 </body>

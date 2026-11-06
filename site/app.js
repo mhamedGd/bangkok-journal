@@ -21,7 +21,7 @@ for (const line of railNetwork.features) {
 const repoUrl = `https://github.com/${config.owner}/${config.repo}`;
 $('#repo-link').href = repoUrl;
 $('#owner-name').textContent = config.owner;
-$('#create-key').href = `https://github.com/settings/personal-access-tokens/new?${new URLSearchParams({name:'My Bangkok journal',description:'Save memories to bangkok-journal. Select only the bangkok-journal repository.',target_name:config.owner,contents:'write',expires_in:'90'})}`;
+$('#create-key').href = `https://github.com/settings/personal-access-tokens/new?${new URLSearchParams({name:'Bangkok journal',description:'Save memories to bangkok-journal. Select only the bangkok-journal repository.',target_name:config.owner,contents:'write',expires_in:'90'})}`;
 const map = L.map('map', { zoomControl: false, scrollWheelZoom: true, minZoom: 9, maxZoom: 19, maxBoundsViscosity:1 }).setView(bangkok, 13);
 map.attributionControl.setPrefix(false);
 function updatePanBounds() {
@@ -61,6 +61,7 @@ function photoUrl(photo) {
   if (!validPhotoPath(photo.path)) return '';
   return state.freshPhotos.get(photo.path) || new URL(photo.path, document.baseURI).href;
 }
+function displayTag(tag) { return tag === 'Little things' ? 'Other' : tag; }
 function filteredMemories() {
   const query = $('#search').value.trim().toLowerCase();
   return state.journal.memories.filter(m => (!$('#day-filter').value || m.date === $('#day-filter').value) && (!$('#tag-filter').value || m.tag === $('#tag-filter').value) && (!query || `${m.title} ${m.place} ${m.note}`.toLowerCase().includes(query))).sort(memorySort);
@@ -69,26 +70,26 @@ function render() {
   const memories = state.journal.memories;
   $('#memory-count').textContent = `${memories.length} ${memories.length === 1 ? 'memory' : 'memories'}`;
   const days = [...new Set(memories.map(m => m.date))].sort();
-  $('#day-count').textContent = days.length ? `${days.length} ${days.length === 1 ? 'day' : 'days'} to remember` : 'a story in the making';
+  $('#day-count').textContent = days.length ? `${days.length} ${days.length === 1 ? 'day' : 'days'}` : '0 days';
   const selectedDay = $('#day-filter').value;
   $('#day-filter').replaceChildren(new Option('All days', ''));
   days.forEach(day => $('#day-filter').add(new Option(friendlyDate(day), day)));
   $('#day-filter').value = days.includes(selectedDay) ? selectedDay : '';
   $('#map-hint').hidden = !!memories.length || state.picking;
   $('#add-button').hidden = !state.client;
-  $('#owner-button').textContent = state.client ? '✓ Editing unlocked' : '↗ Owner access';
+  $('#owner-button').textContent = state.client ? '✓ Editing enabled' : '↗ Owner access';
   const list = $('#memory-list'); list.replaceChildren();
   const visible = filteredMemories();
   if (!memories.length) {
     const empty = create('div', 'empty-state');
     const drawing = create('div','empty-illustration'); drawing.setAttribute('aria-hidden','true'); drawing.append(create('span','ticket'),create('span','ticket front','✳'));
-    empty.append(drawing,create('h3',null,'The best souvenirs are stories.'),create('p',null,state.client ? 'Add your first memory, then choose its place on the map. A street, a temple, a table for two.' : 'A map waiting for your Bangkok stories. Add your first memory to begin.'));
-    const action = create('button','text-button',state.client ? '＋ Keep your first memory' : 'Owner? Start your story ↗'); action.type = 'button'; action.onclick = state.client ? beginMemory : openOwner; empty.append(action); list.append(empty);
+    empty.append(drawing,create('h3',null,'No memories yet.'),create('p',null,state.client ? 'Select Add memory, then choose a location on the map.' : 'Use Owner access to add notes and photos to the map.'));
+    const action = create('button','text-button',state.client ? '＋ Add memory' : 'Owner access'); action.type = 'button'; action.onclick = state.client ? beginMemory : openOwner; empty.append(action); list.append(empty);
   } else if (!visible.length) list.append(create('p','empty-results','No memories here yet. Try another day or search.'));
   else visible.forEach(memory => {
     const card = create('button',`memory-card${state.selected === memory.id ? ' selected' : ''}`); card.type = 'button'; card.setAttribute('aria-label',`${memory.title}, ${memory.place}, ${friendlyDate(memory.date)}`);
     if (memory.photos.length) { const img = create('img'); img.src = photoUrl(memory.photos[0]); img.alt = memory.photos[0].alt; img.loading = 'lazy'; card.append(img); }
-    card.append(create('div','card-meta',`${friendlyDate(memory.date)} / ${memory.tag}`),create('h3',null,memory.title),create('div','card-place',`⌖ ${memory.place}`),create('p','card-note',memory.note));
+    card.append(create('div','card-meta',`${friendlyDate(memory.date)} / ${displayTag(memory.tag)}`),create('h3',null,memory.title),create('div','card-place',`⌖ ${memory.place}`),create('p','card-note',memory.note));
     card.onclick = () => selectMemory(memory.id); list.append(card);
   });
   renderMarkers(visible);
@@ -108,7 +109,7 @@ function selectMemory(id, fly = true) {
   state.selected = id; render();
   const detail = $('#detail'); detail.replaceChildren(); detail.hidden = false;
   const close = create('button','icon-button detail-close','×'); close.setAttribute('aria-label','Close memory'); close.onclick = closeDetail;
-  detail.append(close,create('div','detail-date',`${friendlyDate(memory.date)} · ${memory.tag}`),create('h2',null,memory.title),create('div','detail-place',`⌖ ${memory.place}`));
+  detail.append(close,create('div','detail-date',`${friendlyDate(memory.date)} · ${displayTag(memory.tag)}`),create('h2',null,memory.title),create('div','detail-place',`⌖ ${memory.place}`));
   const photoButton = photo => {
     const button = create('button','detail-photo'); const img = create('img'); img.src = photoUrl(photo); img.alt = photo.alt; button.append(img); button.setAttribute('aria-label',`Open photograph: ${photo.alt}`);
     button.onclick = () => { $('#full-photo').src = photoUrl(photo); $('#full-photo').alt = photo.alt; $('#photo-dialog').showModal(); }; return button;
@@ -152,9 +153,9 @@ $('#owner-form').onsubmit = async event => {
   const client = new GitHubClient(token);
   try {
     await client.authenticate(); const latest = await client.readLatest(); state.journal = latest.journal; state.loaded = true; state.client = client;
-    $('#owner-dialog').close(); render(); notify('Welcome back. Your journal is unlocked in this tab.');
+    $('#owner-dialog').close(); render(); notify('Editing enabled for this tab.');
   } catch (error) { client.lock(); $('#owner-error').textContent = error.message; }
-  finally { button.disabled = false; button.textContent = 'Unlock my journal ↗'; }
+  finally { button.disabled = false; button.textContent = 'Enable editing'; }
 };
 function lockEditing() {
   if (state.saving) return;
@@ -176,7 +177,7 @@ function beginMemory() {
   const timestamp = new Date().toISOString();
   state.draft = { id:crypto.randomUUID(), title:'', place:'', note:'', date:localDate(), tag:'Little things', lat:bangkok[0], lng:bangkok[1], photos:[],createdAt:timestamp,updatedAt:timestamp };
   $('#memory-form').reset(); $('#photo-previews').replaceChildren(); $('#memory-date').value = state.draft.date;
-  $('#editor-error').textContent = ''; $('#editor-title').innerHTML = 'Keep this <em>moment.</em>';
+  $('#editor-error').textContent = ''; $('#editor-title').textContent = 'Add memory';
   startPicking();
 }
 function startPicking() {
@@ -210,7 +211,7 @@ function editMemory(memory) {
   $('#memory-form').reset();
   for (const key of ['title','place','note','date','tag']) $(`#memory-${key}`).value = memory[key];
   state.photos = memory.photos.map(photo => ({ ...photo, existing:true })); renderPhotoPreviews();
-  $('#editor-title').innerHTML = 'Revisit this <em>moment.</em>'; $('#editor-error').textContent = ''; openEditor();
+  $('#editor-title').textContent = 'Edit memory'; $('#editor-error').textContent = ''; openEditor();
 }
 async function preparePhoto(file) {
   if (!['image/jpeg','image/png','image/webp'].includes(file.type)) throw new Error('Please choose JPEG, PNG, or WebP photographs.');
@@ -245,7 +246,7 @@ function setSaving(value) {
 }
 $('#memory-form').onsubmit = async event => {
   event.preventDefault(); if (state.saving || preparingPhotos || !state.client || !state.draft) return;
-  captureDraft(); if (!state.draft.title || !state.draft.place || !state.draft.note) { $('#editor-error').textContent = 'Please add a title, a place, and a few words.'; return; }
+  captureDraft(); if (!state.draft.title || !state.draft.place || !state.draft.note) { $('#editor-error').textContent = 'Please enter a title, place, and notes.'; return; }
   if (!pointInCity(state.draft.lng,state.draft.lat,cityBoundary)) { $('#editor-error').textContent = 'Please choose a location inside Bangkok.'; return; }
   const draft = state.draft;
   const memory = Object.fromEntries(['id','title','place','note','date','tag','lat','lng','createdAt'].map(key => [key,draft[key]]));

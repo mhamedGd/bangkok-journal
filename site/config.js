@@ -1,5 +1,5 @@
 export const config = Object.freeze({
-  title: 'My Bangkok',
+  title: 'Bangkok',
   owner: 'mhamedGd',
   ownerId: 41286935,
   repo: 'bangkok-journal',

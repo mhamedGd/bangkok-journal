@@ -1,6 +1,6 @@
-# My Bangkok
+# Bangkok journal
 
-A personal map journal, hosted on GitHub Pages. Public stories; editing belongs to **mhamedGd**. The interface and basemap are black and white, with the published route colors reserved for rail lines.
+A personal map journal, hosted on GitHub Pages. Public memories; editing belongs to **mhamedGd**. The interface and basemap are black and white, with the published route colors reserved for rail lines.
 
 ## Open the journal
 
@@ -12,7 +12,7 @@ Explore Bangkok, search memories, filter by day or category, and open photograph
 
 1. Open **Owner access**.
 2. Follow **Create your repository key on GitHub**. Choose **Only select repositories → bangkok-journal**, and grant **Contents: Read and write**. Metadata read access is automatic. No workflow, administration, or account permissions are needed. Set an expiration you are comfortable with.
-3. Paste the key into the journal and choose **Unlock my journal**. Do not send the key in a chat or commit it to this repository.
+3. Paste the key into the journal and choose **Enable editing**. Do not send the key in a chat or commit it to this repository.
 4. Choose **Add memory**, then click its location on the map. Give it a title, place, date, notes, optional category, and up to eight photos.
 5. Choose **Save memory**. One commit saves its notes, coordinates, and photos together. GitHub Actions publishes the new site, usually within a few minutes. The current tab shows the saved memory immediately.
 
