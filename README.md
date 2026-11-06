@@ -6,7 +6,7 @@ A personal map journal, hosted on GitHub Pages. Public memories; editing belongs
 
 https://mhamedgd.github.io/bangkok-journal/
 
-Explore Bangkok, search memories, filter by day or category, and open photographs. Use **Rail & metro** to show or hide rail infrastructure, including underground lines, and **Line colors** for the legend. Everything outside Bangkok's administrative land boundary is hidden. You can pan any city edge to the center of the map; bounds adjust with zoom and viewport size rather than pinning the city edges to the viewport edges. The journal starts empty: no invented trip memories are published.
+Explore Bangkok, search memories, filter by day or category, and open photographs. The map includes 30 curated landmarks, malls, and airports. Use the map search to find them, the Places menu to toggle categories, or select a place to see its name. When editing is enabled, Add memory here pre-fills its location and place name. Use **Rail & metro** to show or hide rail infrastructure, including underground lines, and **Line colors** for the legend. The map includes Bangkok and its surrounding metro area, including both airports. Areas outside that region are hidden. You can pan any region edge to the center of the map; bounds adjust with zoom and viewport size rather than pinning the city edges to the viewport edges. The journal starts empty: no invented trip memories are published.
 
 ## Add your first memory
 
@@ -44,7 +44,8 @@ Open http://localhost:4173. The owner editor connects to the real configured Git
 - `site/photos/<memory-id>/`: processed photographs.
 - `site/github.js`: authentication, conflict detection, and atomic Git commits.
 - `site/map-style.json`: the custom monochrome map, with quieter streets and colored rail routes. Street names and station labels appear when zoomed in.
-- `site/data/bangkok-*.geojson`: the published city boundary, its outside mask, and OTP rail shapes and stations. See `site/data/SOURCES.md` for source versions, licenses, and changes.
+- `site/data/bangkok-*.geojson`: the published city and metro region boundaries, outside masks, and OTP rail shapes and stations.
+- `site/data/places.geojson`: curated landmarks, malls, and airports, with individual source links. See `site/data/SOURCES.md` for source versions, licenses, and changes.
 - `.github/workflows/pages.yml`: publishes `site/` after changes to the main branch.
 
 Repository **Settings → Pages → Source** must be **GitHub Actions**. The account used by the editor needs write access to the configured branch; branch protections requiring pull requests will prevent direct saves.

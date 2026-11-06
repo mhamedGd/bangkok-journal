@@ -32,10 +32,16 @@
     <section class="map-section" aria-label="Interactive map of Bangkok">
       <div id="map"></div>
       <div class="map-heading"><span class="map-eyebrow">THAILAND</span><span class="map-title">Bangkok <span lang="th">กรุงเทพฯ</span></span></div>
+      <div class="place-tools">
+        <label class="sr-only" for="place-search">Find a landmark, mall, or airport</label>
+        <input id="place-search" type="search" list="place-options" autocomplete="off" placeholder="Find a landmark, mall or airport…">
+        <datalist id="place-options"></datalist>
+        <details class="place-filters"><summary>Places</summary><div><label><input type="checkbox" value="landmark" checked> Landmarks</label><label><input type="checkbox" value="mall" checked> Malls</label><label><input type="checkbox" value="airport" checked> Airports</label></div></details>
+      </div>
       <div class="map-controls"><button id="zoom-in" class="map-button" aria-label="Zoom in">＋</button><button id="zoom-out" class="map-button" aria-label="Zoom out">−</button><button id="fit-map" class="map-button" aria-label="Show all memories">⌖</button></div>
       <button id="rail-toggle" class="rail-toggle" type="button" aria-pressed="true" aria-label="Show rail and metro lines"><span class="rail-swatch" aria-hidden="true"></span><span>Rail & metro</span></button>
       <details class="rail-legend"><summary>Line colors</summary><div id="rail-legend-grid" class="rail-legend-grid"></div><small>Line colors and routes from Thailand’s Office of Transport and Traffic Policy and Planning.</small></details>
-      <span class="map-region-note">BANGKOK CITY LIMITS</span>
+      <span class="map-region-note">BANGKOK METRO AREA</span>
       <div id="map-hint" class="map-hint"><span class="hint-icon" aria-hidden="true">✳</span><span>Bangkok</span></div>
       <div class="map-caption">13.7563° N &nbsp; 100.5018° E <span>BANGKOK</span></div>
       <div id="place-picker" class="place-picker" hidden><span>Tap anywhere on the map to place your memory.</span><button id="cancel-pick" class="button quiet">Cancel</button></div>

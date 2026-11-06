@@ -1,0 +1,490 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "OpenStreetMap contributors; one-time curated place geocoding",
+    "license": "ODbL 1.0",
+    "retrieved": "2026-11-06"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "grand-palace",
+        "name": "Grand Palace",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/23482754"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.491864,
+          13.749351
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "wat-pho",
+        "name": "Wat Pho",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/relation/11169995"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.492738,
+          13.746346
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "wat-arun",
+        "name": "Wat Arun",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/23481741"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.488514,
+          13.743898
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "wat-saket",
+        "name": "Wat Saket",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/88359228"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.506694,
+          13.753849
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "chatuchak-weekend-market",
+        "name": "Chatuchak Weekend Market",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/37911198"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.551123,
+          13.800265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lumphini-park",
+        "name": "Lumphini Park",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/23483299"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.541538,
+          13.7306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "benchakitti-park",
+        "name": "Benchakitti Park",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/864170465"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.554764,
+          13.729082
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "chinatown",
+        "name": "Chinatown",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/node/340165036"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.508948,
+          13.741907
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "jim-thompson-house",
+        "name": "Jim Thompson House",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/341577338"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.528281,
+          13.749227
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "mahanakhon",
+        "name": "Mahanakhon",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/444651219"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.528223,
+          13.723407
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "asiatique",
+        "name": "Asiatique",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/196107455"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.502714,
+          13.704157
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "erawan-shrine",
+        "name": "Erawan Shrine",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/node/373104218"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.540421,
+          13.744321
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "democracy-monument",
+        "name": "Democracy Monument",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/178329973"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.501841,
+          13.756666
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "victory-monument",
+        "name": "Victory Monument",
+        "category": "landmark",
+        "source": "https://www.openstreetmap.org/way/158185227"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.538286,
+          13.764931
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "iconsiam",
+        "name": "ICONSIAM",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/680735864"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.510294,
+          13.726823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "siam-paragon",
+        "name": "Siam Paragon",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/781138575"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.534954,
+          13.746778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "centralworld",
+        "name": "centralwOrld",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/157482067"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.539041,
+          13.746577
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "mbk-center",
+        "name": "MBK Center",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/157487610"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.529916,
+          13.744715
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "terminal-21-asok",
+        "name": "Terminal 21 Asok",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/157656710"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.560411,
+          13.737869
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "central-embassy",
+        "name": "Central Embassy",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/244115004"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.546697,
+          13.74401
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "emquartier",
+        "name": "EmQuartier",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/318785712"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.569636,
+          13.731963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "emsphere",
+        "name": "EmSphere",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/405853851"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.566076,
+          13.732513
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "central-ladprao",
+        "name": "Central Ladprao",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/157668553"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.561361,
+          13.816838
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "central-rama-9",
+        "name": "Central Rama 9",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/176298728"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.566065,
+          13.758568
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "central-westgate",
+        "name": "Central Westgate",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/359413315"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.411528,
+          13.876798
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "mega-bangna",
+        "name": "Mega Bangna",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/175552840"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.680508,
+          13.647064
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "future-park-rangsit",
+        "name": "Future Park Rangsit",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/175274042"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.61844,
+          13.988952
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "seacon-square",
+        "name": "Seacon Square",
+        "category": "mall",
+        "source": "https://www.openstreetmap.org/way/33434999"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.648163,
+          13.69413
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "suvarnabhumi-airport-bkk",
+        "name": "Suvarnabhumi Airport (BKK)",
+        "category": "airport",
+        "source": "https://www.openstreetmap.org/way/26071844"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.751084,
+          13.691619
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "don-mueang-airport-dmk",
+        "name": "Don Mueang Airport (DMK)",
+        "category": "airport",
+        "source": "https://www.openstreetmap.org/way/159466978"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          100.603531,
+          13.912221
+        ]
+      }
+    }
+  ]
+}

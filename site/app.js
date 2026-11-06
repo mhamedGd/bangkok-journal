@@ -6,7 +6,7 @@ const $ = selector => document.querySelector(selector);
 const create = (tag, className, text) => { const el = document.createElement(tag); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; };
 const state = { journal: { version: 1, memories: [] }, client: null, selected: null, picking: false, draft: null, photos: [], saving: false, loaded: false, freshPhotos: new Map() };
 const bangkok = [13.745, 100.515];
-const [cityBoundary,railNetwork] = await Promise.all(['data/bangkok-boundary.geojson','data/bangkok-rail.geojson'].map(async path => {
+const [cityBoundary,railNetwork,places] = await Promise.all(['data/bangkok-region.geojson','data/bangkok-rail.geojson','data/places.geojson'].map(async path => {
   const response = await fetch(path);
   if (!response.ok) throw new Error('Bangkok map data could not be loaded. Please refresh.');
   return response.json();
@@ -22,7 +22,7 @@ const repoUrl = `https://github.com/${config.owner}/${config.repo}`;
 $('#repo-link').href = repoUrl;
 $('#owner-name').textContent = config.owner;
 $('#create-key').href = `https://github.com/settings/personal-access-tokens/new?${new URLSearchParams({name:'Bangkok journal',description:'Save memories to bangkok-journal. Select only the bangkok-journal repository.',target_name:config.owner,contents:'write',expires_in:'90'})}`;
-const map = L.map('map', { zoomControl: false, scrollWheelZoom: true, minZoom: 9, maxZoom: 19, maxBoundsViscosity:1 }).setView(bangkok, 13);
+const map = L.map('map', { zoomControl: false, scrollWheelZoom: true, minZoom: 8, maxZoom: 19, maxBoundsViscosity:1 }).setView(bangkok, 13);
 map.attributionControl.setPrefix(false);
 function updatePanBounds() {
   const size = map.getSize();
@@ -47,6 +47,59 @@ $('#rail-toggle').onclick = () => {
   $('#rail-toggle').setAttribute('aria-pressed',String(showRail));
   updateRailVisibility();
 };
+const placeCategories = new Set(['landmark','mall','airport']);
+function updatePlaceVisibility() {
+  for (const category of ['landmark','mall','airport']) {
+    for (const suffix of ['dots','labels']) {
+      const id = `places-${category}-${suffix}`;
+      if (vectorMap.getLayer(id)) vectorMap.setLayoutProperty(id,'visibility',placeCategories.has(category) ? 'visible' : 'none');
+    }
+  }
+  $('#place-options').replaceChildren(...places.features.filter(p=>placeCategories.has(p.properties.category)).map(p=>new Option(p.properties.name,p.properties.name)));
+}
+document.querySelectorAll('.place-filters input').forEach(input=>input.onchange=()=>{
+  if (input.checked) placeCategories.add(input.value); else placeCategories.delete(input.value);
+  map.closePopup(); updatePlaceVisibility();
+});
+vectorMap.on('load',updatePlaceVisibility);
+updatePlaceVisibility();
+function openPlace(place) {
+  closeDetail(); map.closePopup();
+  const node = create('div','place-popup');
+  node.append(create('h3',null,place.properties.name),create('p',null,({landmark:'Landmark',mall:'Shopping mall',airport:'Airport'})[place.properties.category]));
+  if (state.client) {
+    const button = create('button','button primary',state.picking ? 'Use this location' : 'Add memory here');
+    button.onclick = () => {
+      if (!state.picking || !state.draft) beginMemory();
+      cancelPicking();
+      state.draft.lng = place.geometry.coordinates[0]; state.draft.lat = place.geometry.coordinates[1];
+      state.draft.hasLocation = true; state.draft.place = place.properties.name;
+      $('#memory-place').value = place.properties.name; map.closePopup(); openEditor();
+    };
+    node.append(button);
+  }
+  L.popup({maxWidth:270}).setLatLng([place.geometry.coordinates[1],place.geometry.coordinates[0]]).setContent(node).openOn(map);
+}
+function placeAt(latlng) {
+  if (!vectorMap.getLayer('places-airport-dots')) return null;
+  const point = vectorMap.project([latlng.lng,latlng.lat]);
+  const features = vectorMap.queryRenderedFeatures([[point.x-9,point.y-9],[point.x+9,point.y+9]],{layers:['places-landmark-dots','places-landmark-labels','places-mall-dots','places-mall-labels','places-airport-dots','places-airport-labels']});
+  return features.length ? places.features.find(p=>p.properties.id===features[0].properties.id) : null;
+}
+function findPlace(explicit = false) {
+  const value = $('#place-search').value.trim().toLocaleLowerCase();
+  if (!value) return;
+  const matches = places.features.filter(p=>p.properties.name.toLocaleLowerCase().includes(value) && placeCategories.has(p.properties.category));
+  const place = matches.find(p=>p.properties.name.toLocaleLowerCase()===value) || (matches.length===1 ? matches[0] : null);
+  if (!place) { if(explicit) notify(matches.length ? 'Select a place from the suggestions.' : 'No matching place in this list. You can still choose its location on the map.'); return; }
+  $('#place-search').value = place.properties.name;
+  $('#place-search').blur();
+  map.stop();
+  map.setView([place.geometry.coordinates[1],place.geometry.coordinates[0]],place.properties.category==='airport'?14:16,{animate:false});
+  openPlace(place);
+}
+$('#place-search').onchange = () => findPlace();
+$('#place-search').onkeydown = event => { if(event.key==='Enter'){event.preventDefault();findPlace(true);} };
 const markers = L.layerGroup().addTo(map);
 let pickingMarker = null;
 let toastTimer;
@@ -106,7 +159,7 @@ function renderMarkers(memories) {
 }
 function selectMemory(id, fly = true) {
   const memory = state.journal.memories.find(m => m.id === id); if (!memory) return;
-  state.selected = id; render();
+  map.closePopup(); state.selected = id; render();
   const detail = $('#detail'); detail.replaceChildren(); detail.hidden = false;
   const close = create('button','icon-button detail-close','×'); close.setAttribute('aria-label','Close memory'); close.onclick = closeDetail;
   detail.append(close,create('div','detail-date',`${friendlyDate(memory.date)} · ${displayTag(memory.tag)}`),create('h2',null,memory.title),create('div','detail-place',`⌖ ${memory.place}`));
@@ -173,7 +226,7 @@ function clearDraft() {
 function beginMemory() {
   if (!state.client) return openOwner();
   if (!state.loaded) return notify('Load the journal before adding a memory.');
-  clearDraft();
+  map.closePopup(); clearDraft();
   const timestamp = new Date().toISOString();
   state.draft = { id:crypto.randomUUID(), title:'', place:'', note:'', date:localDate(), tag:'Little things', lat:bangkok[0], lng:bangkok[1], photos:[],createdAt:timestamp,updatedAt:timestamp };
   $('#memory-form').reset(); $('#photo-previews').replaceChildren(); $('#memory-date').value = state.draft.date;
@@ -191,9 +244,13 @@ function cancelPicking() {
 }
 $('#cancel-pick').onclick = () => { cancelPicking(); if (state.draft?.hasLocation) openEditor(); else clearDraft(); };
 map.on('click', event => {
-  if (!state.picking || !state.client) return;
-  if (!pointInCity(event.latlng.lng,event.latlng.lat,cityBoundary)) return notify('Choose a place inside Bangkok’s city boundary.');
-  state.draft.lat = Number(event.latlng.lat.toFixed(6)); state.draft.lng = Number(event.latlng.lng.toFixed(6)); state.draft.hasLocation = true;
+  const place = placeAt(event.latlng);
+  if (!state.picking || !state.client) { if (place) openPlace(place); return; }
+  if (!pointInCity(event.latlng.lng,event.latlng.lat,cityBoundary)) return notify('Choose a place inside the Bangkok metro area.');
+  state.draft.lat = place ? place.geometry.coordinates[1] : Number(event.latlng.lat.toFixed(6));
+  state.draft.lng = place ? place.geometry.coordinates[0] : Number(event.latlng.lng.toFixed(6));
+  if (place) { state.draft.place = place.properties.name; $('#memory-place').value = place.properties.name; }
+  state.draft.hasLocation = true;
   cancelPicking(); openEditor();
 });
 function openEditor() {
@@ -247,7 +304,7 @@ function setSaving(value) {
 $('#memory-form').onsubmit = async event => {
   event.preventDefault(); if (state.saving || preparingPhotos || !state.client || !state.draft) return;
   captureDraft(); if (!state.draft.title || !state.draft.place || !state.draft.note) { $('#editor-error').textContent = 'Please enter a title, place, and notes.'; return; }
-  if (!pointInCity(state.draft.lng,state.draft.lat,cityBoundary)) { $('#editor-error').textContent = 'Please choose a location inside Bangkok.'; return; }
+  if (!pointInCity(state.draft.lng,state.draft.lat,cityBoundary)) { $('#editor-error').textContent = 'Please choose a location inside the Bangkok metro area.'; return; }
   const draft = state.draft;
   const memory = Object.fromEntries(['id','title','place','note','date','tag','lat','lng','createdAt'].map(key => [key,draft[key]]));
   memory.updatedAt = new Date().toISOString(); memory.photos = state.photos.map(p => ({path:p.path,alt:p.alt}));

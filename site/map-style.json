@@ -2,7 +2,7 @@
   "version": 8,
   "name": "Bangkok in Black & White",
   "metadata": {
-    "description": "Monochrome Bangkok city map. Rail geometry and line colors from OTP Namtang GTFS. Outside-city features are masked."
+    "description": "Monochrome Bangkok metropolitan area. Colored OTP rail routes; curated landmarks, malls, and airports; surrounding areas masked."
   },
   "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
   "sources": {
@@ -20,11 +20,15 @@
     },
     "city-mask": {
       "type": "geojson",
-      "data": "./data/bangkok-mask.geojson"
+      "data": "./data/bangkok-region-mask.geojson"
     },
     "city-boundary": {
       "type": "geojson",
-      "data": "./data/bangkok-boundary.geojson"
+      "data": "./data/bangkok-region.geojson"
+    },
+    "places": {
+      "type": "geojson",
+      "data": "./data/places.geojson"
     }
   },
   "layers": [
@@ -182,6 +186,73 @@
           5
         ],
         "line-opacity": 0.7
+      }
+    },
+    {
+      "id": "airport-runways",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "aeroway",
+      "minzoom": 10,
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "runway"
+      ],
+      "layout": {
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-color": "#686868",
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          10,
+          1.5,
+          14,
+          8,
+          18,
+          25
+        ]
+      }
+    },
+    {
+      "id": "airport-taxiways",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "aeroway",
+      "minzoom": 12,
+      "filter": [
+        "==",
+        [
+          "get",
+          "class"
+        ],
+        "taxiway"
+      ],
+      "paint": {
+        "line-color": "#424242",
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          5
+        ]
       }
     },
     {
@@ -516,6 +587,180 @@
       "paint": {
         "text-color": "#888888",
         "text-halo-color": "#161616",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "places-landmark-dots",
+      "type": "circle",
+      "source": "places",
+      "minzoom": 11,
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        "landmark"
+      ],
+      "paint": {
+        "circle-color": "#eeeeee",
+        "circle-radius": 3,
+        "circle-stroke-width": 1.5,
+        "circle-stroke-color": "#111111"
+      }
+    },
+    {
+      "id": "places-landmark-labels",
+      "type": "symbol",
+      "source": "places",
+      "minzoom": 11,
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        "landmark"
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": 11,
+        "text-variable-anchor": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ],
+        "text-radial-offset": 0.8,
+        "text-padding": 5,
+        "text-max-width": 13
+      },
+      "paint": {
+        "text-color": "#ededed",
+        "text-halo-color": "#111111",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "places-mall-dots",
+      "type": "circle",
+      "source": "places",
+      "minzoom": 11.5,
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        "mall"
+      ],
+      "paint": {
+        "circle-color": "#eeeeee",
+        "circle-radius": 3,
+        "circle-stroke-width": 1.5,
+        "circle-stroke-color": "#111111"
+      }
+    },
+    {
+      "id": "places-mall-labels",
+      "type": "symbol",
+      "source": "places",
+      "minzoom": 11.5,
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        "mall"
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": 11,
+        "text-variable-anchor": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ],
+        "text-radial-offset": 0.8,
+        "text-padding": 5,
+        "text-max-width": 13
+      },
+      "paint": {
+        "text-color": "#ededed",
+        "text-halo-color": "#111111",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "places-airport-dots",
+      "type": "circle",
+      "source": "places",
+      "minzoom": 6,
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        "airport"
+      ],
+      "paint": {
+        "circle-color": "#eeeeee",
+        "circle-radius": 4,
+        "circle-stroke-width": 1.5,
+        "circle-stroke-color": "#111111"
+      }
+    },
+    {
+      "id": "places-airport-labels",
+      "type": "symbol",
+      "source": "places",
+      "minzoom": 6,
+      "filter": [
+        "==",
+        [
+          "get",
+          "category"
+        ],
+        "airport"
+      ],
+      "layout": {
+        "text-field": [
+          "get",
+          "name"
+        ],
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": 12,
+        "text-variable-anchor": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ],
+        "text-radial-offset": 0.8,
+        "text-padding": 5,
+        "text-max-width": 13
+      },
+      "paint": {
+        "text-color": "#ededed",
+        "text-halo-color": "#111111",
         "text-halo-width": 2
       }
     },

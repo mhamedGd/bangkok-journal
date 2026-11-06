@@ -33,3 +33,22 @@ test('urban rail uses all ten OTP feed routes with their published colors',()=>{
     for(const line of feature.geometry.coordinates)assert.ok(line.length>=2);
   }
 });
+const region=JSON.parse(readFileSync(new URL('../site/data/bangkok-region.geojson',import.meta.url)));
+const places=JSON.parse(readFileSync(new URL('../site/data/places.geojson',import.meta.url)));
+test('the expanded map includes both airports and suburban malls',()=>{
+  const ids=['suvarnabhumi-airport-bkk','don-mueang-airport-dmk','mega-bangna','central-westgate','future-park-rangsit'];
+  for(const id of ids){
+    const place=places.features.find(f=>f.properties.id===id);assert.ok(place,`${id} is missing`);
+    assert.equal(pointInCity(...place.geometry.coordinates,region),true,`${id} is outside the displayed region`);
+  }
+});
+test('curated places have sourced positions, unique IDs, and supported categories',()=>{
+  assert.equal(places.features.length,30);
+  const ids=new Set();
+  for(const place of places.features){
+    assert.ok(!ids.has(place.properties.id));ids.add(place.properties.id);
+    assert.match(place.properties.source,/^https:\/\/www.openstreetmap.org\/(node|way|relation)\/\d+$/);
+    assert.ok(['landmark','mall','airport'].includes(place.properties.category));
+    assert.equal(pointInCity(...place.geometry.coordinates,region),true,place.properties.name);
+  }
+});

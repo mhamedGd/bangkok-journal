@@ -34,3 +34,11 @@ Download the published boundary GeoJSON (use GitHub's media download for the LFS
     python3 scripts/prepare-geography.py thailand-boundaries.geojson namtang-gtfs.zip
 
 This updates the four derived GeoJSON files. Review them and their source versions before publishing. Downloaded source archives are not part of the website.
+
+## Expanded region and curated places
+
+The displayed area now includes Bangkok and its surrounding metropolitan provinces: Nonthaburi, Pathum Thani, Samut Prakan, Samut Sakhon, and Nakhon Pathom. The region boundary is the union of these six published geoBoundaries ADM1 land polygons (ISO TH-10, TH-11, TH-12, TH-13, TH-73, TH-74). Its inverse mask hides the rest of the map. Both derived files are provided under ODbL 1.0. The original city-only files are retained as source data; the displayed map uses `bangkok-region.geojson` and `bangkok-region-mask.geojson`.
+
+`places.geojson` contains a curated set of 14 landmarks, 14 malls, and two airports. Coordinates are sourced from OpenStreetMap; each feature includes its exact OSM source link. Names are shortened for labels where appropriate. Mall and landmark matches were reviewed to avoid nearby bus stops or similarly named residential developments. Suvarnabhumi uses the main passenger terminal's location. Retrieved November 6, 2026; ODbL 1.0.
+
+The one-time place lookups were cached and rate limited to a single request at a time, with more than one second between requests, following the [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/). The website does not call Nominatim: its place search operates only on this local, curated dataset.
