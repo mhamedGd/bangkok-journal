@@ -1,16 +1,52 @@
 import { config } from './config.js';
 import { GitHubClient, validateJournal, validPhotoPath } from './github.js';
+import { pointInCity, viewportPaddedBounds } from './geography.js';
 
 const $ = selector => document.querySelector(selector);
 const create = (tag, className, text) => { const el = document.createElement(tag); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; };
 const state = { journal: { version: 1, memories: [] }, client: null, selected: null, picking: false, draft: null, photos: [], saving: false, loaded: false, freshPhotos: new Map() };
 const bangkok = [13.745, 100.515];
+const [cityBoundary,railNetwork] = await Promise.all(['data/bangkok-boundary.geojson','data/bangkok-rail.geojson'].map(async path => {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error('Bangkok map data could not be loaded. Please refresh.');
+  return response.json();
+}));
+const [west,south,east,north] = cityBoundary.bbox;
+const cityBounds = L.latLngBounds([south,west],[north,east]);
+for (const line of railNetwork.features) {
+  const item = create('div','rail-legend-item');
+  const swatch = create('span'); swatch.style.backgroundColor = line.properties.color; swatch.setAttribute('aria-hidden','true');
+  item.append(swatch,create('span',null,line.properties.name)); $('#rail-legend-grid').append(item);
+}
 const repoUrl = `https://github.com/${config.owner}/${config.repo}`;
 $('#repo-link').href = repoUrl;
 $('#owner-name').textContent = config.owner;
 $('#create-key').href = `https://github.com/settings/personal-access-tokens/new?${new URLSearchParams({name:'My Bangkok journal',description:'Save memories to bangkok-journal. Select only the bangkok-journal repository.',target_name:config.owner,contents:'write',expires_in:'90'})}`;
-const map = L.map('map', { zoomControl: false, scrollWheelZoom: true, minZoom: 3, maxZoom: 19 }).setView(bangkok, 13);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+const map = L.map('map', { zoomControl: false, scrollWheelZoom: true, minZoom: 9, maxZoom: 19, maxBoundsViscosity:1 }).setView(bangkok, 13);
+map.attributionControl.setPrefix(false);
+function updatePanBounds() {
+  const size = map.getSize();
+  const padded = viewportPaddedBounds(map.project(cityBounds.getNorthWest()),map.project(cityBounds.getSouthEast()),size.x,size.y);
+  map.setMaxBounds(L.latLngBounds(map.unproject(L.point(padded.northwest.x,padded.northwest.y)),map.unproject(L.point(padded.southeast.x,padded.southeast.y))));
+}
+map.on('zoomend resize',updatePanBounds);
+updatePanBounds();
+const vectorLayer = L.maplibreGL({
+  style: new URL('map-style.json', document.baseURI).href,
+  attributionControl: { customAttribution: '<a href="https://openfreemap.org">OpenFreeMap</a> · &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> / <a href="https://openmaptiles.org">OpenMapTiles</a> · Rail: <a href="https://namtang-api.otp.go.th/opendata">OTP</a> · Boundary: <a href="https://www.geoboundaries.org">geoBoundaries</a>' },
+}).addTo(map);
+const vectorMap = vectorLayer.getMaplibreMap();
+let showRail = true;
+function updateRailVisibility() {
+  if (!vectorMap.getLayer('rail-lines')) return;
+  for (const id of ['national-rail','rail-casing','rail-lines','rail-stations','rail-station-labels']) vectorMap.setLayoutProperty(id,'visibility',showRail ? 'visible' : 'none');
+}
+vectorMap.on('load',updateRailVisibility);
+$('#rail-toggle').onclick = () => {
+  showRail = !showRail;
+  $('#rail-toggle').setAttribute('aria-pressed',String(showRail));
+  updateRailVisibility();
+};
 const markers = L.layerGroup().addTo(map);
 let pickingMarker = null;
 let toastTimer;
@@ -86,12 +122,13 @@ function selectMemory(id, fly = true) {
     actions.append(edit,remove); detail.append(actions);
   }
   if (fly) { const targetZoom = Math.max(map.getZoom(),15); map.flyTo([memory.lat,memory.lng],targetZoom,{ duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : .6 }); }
+  if (fly && innerWidth <= 650) $('.map-section').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'center'});
 }
 function closeDetail() { state.selected = null; $('#detail').hidden = true; renderMarkers(filteredMemories()); document.querySelectorAll('.memory-card.selected').forEach(el => el.classList.remove('selected')); }
 function fitMap() {
   closeDetail(); const visible = filteredMemories();
   if (visible.length) map.fitBounds(L.latLngBounds(visible.map(m => [m.lat,m.lng])),{padding:[65,95],maxZoom:16});
-  else map.setView(bangkok,13);
+  else map.fitBounds(cityBounds,{padding:[30,55]});
 }
 async function loadJournal() {
   try {
@@ -154,6 +191,7 @@ function cancelPicking() {
 $('#cancel-pick').onclick = () => { cancelPicking(); if (state.draft?.hasLocation) openEditor(); else clearDraft(); };
 map.on('click', event => {
   if (!state.picking || !state.client) return;
+  if (!pointInCity(event.latlng.lng,event.latlng.lat,cityBoundary)) return notify('Choose a place inside Bangkok’s city boundary.');
   state.draft.lat = Number(event.latlng.lat.toFixed(6)); state.draft.lng = Number(event.latlng.lng.toFixed(6)); state.draft.hasLocation = true;
   cancelPicking(); openEditor();
 });
@@ -208,6 +246,7 @@ function setSaving(value) {
 $('#memory-form').onsubmit = async event => {
   event.preventDefault(); if (state.saving || preparingPhotos || !state.client || !state.draft) return;
   captureDraft(); if (!state.draft.title || !state.draft.place || !state.draft.note) { $('#editor-error').textContent = 'Please add a title, a place, and a few words.'; return; }
+  if (!pointInCity(state.draft.lng,state.draft.lat,cityBoundary)) { $('#editor-error').textContent = 'Please choose a location inside Bangkok.'; return; }
   const draft = state.draft;
   const memory = Object.fromEntries(['id','title','place','note','date','tag','lat','lng','createdAt'].map(key => [key,draft[key]]));
   memory.updatedAt = new Date().toISOString(); memory.photos = state.photos.map(p => ({path:p.path,alt:p.alt}));

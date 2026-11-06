@@ -45,7 +45,7 @@ export function applyOperation(journal, operation) {
 }
 export class GitHubClient {
   #token;
-  constructor(token, settings = config, transport = fetch) {
+  constructor(token, settings = config, transport = (...args) => fetch(...args)) {
     this.#token = token;
     this.settings = settings;
     this.transport = transport;
@@ -63,7 +63,10 @@ export class GitHubClient {
         headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${this.#token}`, 'X-GitHub-Api-Version': '2022-11-28', ...(options.body ? { 'Content-Type': 'application/json' } : {}) },
         signal: controller.signal,
       });
-    } catch { throw new GitHubError('GitHub could not be reached. If you were saving, refresh the journal to check whether the save completed before retrying.'); }
+    } catch (error) {
+      console.warn('GitHub connection failed:', error.name, error.message);
+      throw new GitHubError('GitHub could not be reached. If you were saving, refresh the journal to check whether the save completed before retrying.');
+    }
     finally { clearTimeout(timeout); }
     if (!response.ok) {
       const errors = {

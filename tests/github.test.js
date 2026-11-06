@@ -80,3 +80,10 @@ test('repository rule failures are surfaced without retrying blindly',async()=>{
   const mock=mockGitHub({ruleFailure:true});await assert.rejects(new GitHubClient('test-key',settings,mock.transport).commitOperation({type:'upsert',id:'one',memory:memory(),baseUpdatedAt:null}),/could not publish/);
   assert.equal(mock.calls.filter(c=>c.method==='PATCH').length,1);
 });
+test('the default browser transport calls fetch without an invalid receiver',async()=>{
+  const original=globalThis.fetch;
+  try{
+    globalThis.fetch=function(url){assert.equal(this,undefined);return Promise.resolve(new Response(JSON.stringify({id:99,login:'visitor'})));};
+    await assert.rejects(new GitHubClient('test-key',settings).authenticate(),/Only owner/);
+  }finally{globalThis.fetch=original;}
+});

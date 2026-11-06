@@ -3,15 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f6f0">
+  <meta name="theme-color" content="#0c0c0c">
   <meta name="description" content="A personal map of Bangkok. Places, photographs, and the little things worth remembering.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://tile.openstreetmap.org https://raw.githubusercontent.com; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://tiles.openfreemap.org https://raw.githubusercontent.com; connect-src 'self' https://api.github.com https://tiles.openfreemap.org; object-src 'none'; base-uri 'self'; form-action 'none'">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap">
   <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="vendor/maplibre-gl.css">
   <link rel="stylesheet" href="styles.css">
   <title>My Bangkok — a personal atlas</title>
   <script src="vendor/leaflet.js" defer></script>
+  <script src="vendor/maplibre-gl.js" defer></script>
+  <script src="vendor/leaflet-maplibre-gl.js" defer></script>
   <script type="module" src="app.js"></script>
 </head>
 <body>
@@ -30,6 +33,9 @@
       <div id="map"></div>
       <div class="map-heading"><span class="map-eyebrow">THE CITY OF ANGELS</span><span class="map-title">Bangkok <span lang="th">กรุงเทพฯ</span></span></div>
       <div class="map-controls"><button id="zoom-in" class="map-button" aria-label="Zoom in">＋</button><button id="zoom-out" class="map-button" aria-label="Zoom out">−</button><button id="fit-map" class="map-button" aria-label="Show all memories">⌖</button></div>
+      <button id="rail-toggle" class="rail-toggle" type="button" aria-pressed="true" aria-label="Show rail and metro lines"><span class="rail-swatch" aria-hidden="true"></span><span>Rail & metro</span></button>
+      <details class="rail-legend"><summary>Line colors</summary><div id="rail-legend-grid" class="rail-legend-grid"></div><small>Line colors and routes from Thailand’s Office of Transport and Traffic Policy and Planning.</small></details>
+      <span class="map-region-note">BANGKOK CITY LIMITS</span>
       <div id="map-hint" class="map-hint"><span class="hint-icon" aria-hidden="true">✳</span><span>A city full of stories.<br><strong>Yours belong here.</strong></span></div>
       <div class="map-caption">13.7563° N &nbsp; 100.5018° E <span>ONE CITY, YOUR PERSPECTIVE</span></div>
       <div id="place-picker" class="place-picker" hidden><span>Tap anywhere on the map to place your memory.</span><button id="cancel-pick" class="button quiet">Cancel</button></div>

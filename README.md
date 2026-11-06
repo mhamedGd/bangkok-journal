@@ -1,12 +1,12 @@
 # My Bangkok
 
-A personal map journal, hosted on GitHub Pages. Public stories; editing belongs to **mhamedGd**.
+A personal map journal, hosted on GitHub Pages. Public stories; editing belongs to **mhamedGd**. The interface and basemap are black and white, with the published route colors reserved for rail lines.
 
 ## Open the journal
 
 https://mhamedgd.github.io/bangkok-journal/
 
-Explore Bangkok, search memories, filter by day or category, and open photographs. The journal starts empty: no invented trip memories are published.
+Explore Bangkok, search memories, filter by day or category, and open photographs. Use **Rail & metro** to show or hide rail infrastructure, including underground lines, and **Line colors** for the legend. Everything outside Bangkok's administrative land boundary is hidden. You can pan any city edge to the center of the map; bounds adjust with zoom and viewport size rather than pinning the city edges to the viewport edges. The journal starts empty: no invented trip memories are published.
 
 ## Add your first memory
 
@@ -24,7 +24,7 @@ The key is held only in JavaScript memory in the current tab. Reloading or choos
 - JPEG, PNG, and WebP uploads are converted to JPEG, capped at 1600 pixels on their longest side. Canvas re-encoding strips the original EXIF metadata, including GPS tags. Keep original photographs elsewhere.
 - A memory is saved only when **Save memory** is pressed. Selecting photos alone does not upload anything.
 - Close the editor only after saving if you want to keep a draft. Unpublished drafts are not stored on disk or synchronized.
-- OpenStreetMap supplies the map tiles, and Google Fonts supplies the typefaces. Those providers receive ordinary browser requests; journal files are hosted on GitHub Pages. No analytics is installed.
+- OpenFreeMap supplies OpenStreetMap vector tiles, and Google Fonts supplies the typefaces. Those providers receive ordinary browser requests; journal files are hosted on GitHub Pages. No analytics is installed.
 
 ## Develop locally
 
@@ -43,6 +43,8 @@ Open http://localhost:4173. The owner editor connects to the real configured Git
 - `site/data/memories.json`: journal data, UTF-8 JSON.
 - `site/photos/<memory-id>/`: processed photographs.
 - `site/github.js`: authentication, conflict detection, and atomic Git commits.
+- `site/map-style.json`: the custom monochrome map, with quieter streets and colored rail routes. Street names and station labels appear when zoomed in.
+- `site/data/bangkok-*.geojson`: the published city boundary, its outside mask, and OTP rail shapes and stations. See `site/data/SOURCES.md` for source versions, licenses, and changes.
 - `.github/workflows/pages.yml`: publishes `site/` after changes to the main branch.
 
 Repository **Settings → Pages → Source** must be **GitHub Actions**. The account used by the editor needs write access to the configured branch; branch protections requiring pull requests will prevent direct saves.
@@ -53,4 +55,6 @@ For a backup, use GitHub's **Code → Download ZIP** or clone this repository. G
 
 ## Dependencies
 
-Leaflet 1.9.4 is vendored under `site/vendor/`; its license is included. Map data © OpenStreetMap contributors, displayed with attribution. All other code is plain browser JavaScript and CSS.
+Leaflet 1.9.4, MapLibre GL JS 5.6.2, and the MapLibre Leaflet bridge 0.1.4 are vendored under `site/vendor/`; their licenses are included. Map data © OpenStreetMap contributors, served by OpenFreeMap / OpenMapTiles with attribution. Rendering the vector map requires WebGL. All other code is plain browser JavaScript and CSS.
+
+For isolated browser testing, run `node tests/preview.mjs` and visit http://localhost:4180. Use the fake key `preview-key`. That server keeps its test memories only in memory and does not contact GitHub. It is not included in the published site.
