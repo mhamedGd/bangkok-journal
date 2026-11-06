@@ -1,4 +1,18 @@
 {
   "version": 1,
-  "memories": []
+  "memories": [
+    {
+      "id": "b455cd28-f8c7-4fe3-874a-229600c19d6f",
+      "title": "Creating this site",
+      "place": "Convenient Park Hotel",
+      "note": "no notes",
+      "date": "2026-11-06",
+      "tag": "Little things",
+      "lat": 13.688891,
+      "lng": 100.608024,
+      "createdAt": "2026-11-06T18:42:06.923Z",
+      "updatedAt": "2026-11-06T18:42:54.871Z",
+      "photos": []
+    }
+  ]
 }
