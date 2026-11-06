@@ -1,6 +1,6 @@
 # Bangkok journal
 
-A personal map journal, hosted on GitHub Pages. Public memories; editing belongs to **mhamedGd**. The interface and basemap are black and white, with the published route colors reserved for rail lines.
+A personal map journal, hosted on GitHub Pages. Public memories; editing belongs to **mhamedGd**. The interface uses a monochrome game-style HUD: system monospace fonts, square panels, and compact controls. The basemap is black and white, with the published route colors reserved for rail lines.
 
 ## Open the journal
 
@@ -24,7 +24,7 @@ The key is held only in JavaScript memory in the current tab. Reloading or choos
 - JPEG, PNG, and WebP uploads are converted to JPEG, capped at 1600 pixels on their longest side. Canvas re-encoding strips the original EXIF metadata, including GPS tags. Keep original photographs elsewhere.
 - A memory is saved only when **Save memory** is pressed. Selecting photos alone does not upload anything.
 - Close the editor only after saving if you want to keep a draft. Unpublished drafts are not stored on disk or synchronized.
-- OpenFreeMap supplies OpenStreetMap vector tiles, and Google Fonts supplies the typefaces. Those providers receive ordinary browser requests; journal files are hosted on GitHub Pages. No analytics is installed.
+- OpenFreeMap supplies OpenStreetMap vector tiles. Interface text uses system monospace fonts. OpenFreeMap receives ordinary browser requests; journal files are hosted on GitHub Pages. No analytics is installed.
 
 ## Develop locally
 

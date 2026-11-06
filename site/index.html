@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0c0c0c">
   <meta name="description" content="Bangkok trip journal with location notes, photos, and rail lines.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob: data: https://tiles.openfreemap.org https://raw.githubusercontent.com; connect-src 'self' https://api.github.com https://tiles.openfreemap.org; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' blob: data: https://tiles.openfreemap.org https://raw.githubusercontent.com; connect-src 'self' https://api.github.com https://tiles.openfreemap.org; object-src 'none'; base-uri 'self'; form-action 'none'">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap">
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="vendor/maplibre-gl.css">
   <link rel="stylesheet" href="styles.css">
@@ -19,7 +18,7 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="Bangkok journal home"><span class="brand-mark" aria-hidden="true">✳</span><span>Trip journal</span></a>
+    <a class="brand" href="./" aria-label="Bangkok journal home"><span class="brand-mark" aria-hidden="true">⌖</span><span>Trip journal</span></a>
     <div class="header-actions"><span class="public-label"><span></span> Public journal</span><button id="owner-button" class="button quiet"><span aria-hidden="true">↗</span> Owner access</button></div>
   </header>
   <main class="layout">
@@ -31,6 +30,7 @@
     </aside>
     <section class="map-section" aria-label="Interactive map of Bangkok">
       <div id="map"></div>
+      <span class="map-crosshair" aria-hidden="true"></span>
       <div class="map-heading"><span class="map-eyebrow">THAILAND</span><span class="map-title">Bangkok <span lang="th">กรุงเทพฯ</span></span></div>
       <div class="place-tools">
         <label class="sr-only" for="place-search">Find a landmark, mall, or airport</label>
