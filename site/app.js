@@ -259,7 +259,13 @@ $('#memory-form').onsubmit = async event => {
     for (const photo of uploads) state.freshPhotos.set(photo.path,`https://raw.githubusercontent.com/${config.owner}/${config.repo}/${saved.sha}/site/${photo.path}`);
     state.journal = saved.journal; $('#search').value = ''; $('#day-filter').value = ''; $('#tag-filter').value = '';
     $('#editor-dialog').close(); clearDraft(); render(); selectMemory(memory.id); notify('Memory committed to GitHub. The public site will update after publishing finishes.');
-  } catch (error) { $('#editor-error').textContent = error.message; }
+  } catch (error) {
+    if (error.latestJournal) {
+      state.journal = error.latestJournal; render();
+      if (state.selected) selectMemory(state.selected,false);
+    }
+    $('#editor-error').textContent = error.message;
+  }
   finally { setSaving(false); }
 };
 $('#confirm-delete').onclick = async () => {

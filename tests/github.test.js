@@ -87,3 +87,12 @@ test('the default browser transport calls fetch without an invalid receiver',asy
     await assert.rejects(new GitHubClient('test-key',settings).authenticate(),/Only owner/);
   }finally{globalThis.fetch=original;}
 });
+test('a conflicting save returns the latest journal so reopening can recover',async()=>{
+  const current=memory('one',{note:'Saved in another tab',updatedAt:'newer'});
+  const mock=mockGitHub({journal:{version:1,memories:[current]}});
+  const client=new GitHubClient('test-key',settings,mock.transport);
+  await assert.rejects(client.commitOperation({type:'upsert',id:'one',memory:memory(),baseUpdatedAt:'older'}),error=>{
+    assert.equal(error.latestJournal.memories[0].note,current.note);return /another tab/.test(error.message);
+  });
+  assert.equal(mock.calls.some(c=>c.method==='PATCH'),false);
+});

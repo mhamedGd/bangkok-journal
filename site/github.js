@@ -104,7 +104,9 @@ export class GitHubClient {
     }
     for (let attempt = 0; attempt < 3; attempt++) {
       const latest = await this.readLatest();
-      const journal = applyOperation(latest.journal, operation);
+      let journal;
+      try { journal = applyOperation(latest.journal, operation); }
+      catch (error) { error.latestJournal = latest.journal; throw error; }
       if (journal === latest.journal) return { journal, sha: latest.head, unchanged: true };
       const referenced = new Set(journal.memories.flatMap(m => m.photos.map(p => p.path)));
       const tree = [{ path: this.settings.dataPath, mode: '100644', type: 'blob', content: `${JSON.stringify(journal, null, 2)}\n` }, ...photoEntries];
