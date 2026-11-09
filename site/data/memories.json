@@ -53,8 +53,17 @@
       "lat": 13.727817,
       "lng": 100.532612,
       "createdAt": "2026-11-09T19:14:40.720Z",
-      "updatedAt": "2026-11-09T19:17:34.491Z",
-      "photos": []
+      "updatedAt": "2026-11-09T19:31:23.985Z",
+      "photos": [
+        {
+          "path": "photos/09029df1-5ee7-4593-a686-3f146353d26e/d1a773ac-1801-44bd-8afb-7975956abef3.jpg",
+          "alt": "45520"
+        },
+        {
+          "path": "photos/09029df1-5ee7-4593-a686-3f146353d26e/ef020f9a-0225-4f09-a8cc-c73cffb06fda.jpg",
+          "alt": "45521"
+        }
+      ]
     }
   ]
 }
