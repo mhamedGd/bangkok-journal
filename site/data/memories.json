@@ -13,6 +13,28 @@
       "createdAt": "2026-11-06T18:42:06.923Z",
       "updatedAt": "2026-11-06T18:42:54.871Z",
       "photos": []
+    },
+    {
+      "id": "9f80243b-ea4b-4de2-a7ff-5e3ac7022fed",
+      "title": "Waiting Customs",
+      "place": "Suvarnabhumi Airport (BKK)",
+      "note": "I was waiting in line for customs when I saw the this in-door green area",
+      "date": "2026-10-28",
+      "tag": "Little things",
+      "lat": 13.691619,
+      "lng": 100.751084,
+      "createdAt": "2026-11-09T19:06:08.621Z",
+      "updatedAt": "2026-11-09T19:07:28.655Z",
+      "photos": [
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/b33e7fef-b396-4ba0-83b0-478e30974f1d.jpg",
+          "alt": "44360"
+        },
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/d3d7ef71-ac2f-48ab-be3a-458519a28c4c.jpg",
+          "alt": "44361"
+        }
+      ]
     }
   ]
 }
