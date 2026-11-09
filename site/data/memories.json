@@ -3,15 +3,15 @@
   "memories": [
     {
       "id": "9f80243b-ea4b-4de2-a7ff-5e3ac7022fed",
-      "title": "Waiting Customs",
+      "title": "Arrival",
       "place": "Suvarnabhumi Airport (BKK)",
-      "note": "I was waiting in line for customs when I saw the this in-door green area",
+      "note": "First day arrival in Bangkok",
       "date": "2026-10-28",
       "tag": "Little things",
       "lat": 13.691619,
       "lng": 100.751084,
       "createdAt": "2026-11-09T19:06:08.621Z",
-      "updatedAt": "2026-11-09T19:07:28.655Z",
+      "updatedAt": "2026-11-09T19:11:14.888Z",
       "photos": [
         {
           "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/b33e7fef-b396-4ba0-83b0-478e30974f1d.jpg",
@@ -20,6 +20,26 @@
         {
           "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/d3d7ef71-ac2f-48ab-be3a-458519a28c4c.jpg",
           "alt": "44361"
+        },
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/4c9421a5-4c22-45b6-8d9c-873c0d3e88bb.jpg",
+          "alt": "44360"
+        },
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/3ad05a79-8463-4f43-8213-3d5aa7fd5634.jpg",
+          "alt": "44361"
+        },
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/7c5aaacd-9b7f-43fc-9c86-3efadf16325e.jpg",
+          "alt": "44364"
+        },
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/3f595f48-cf9b-4bc6-b91f-3437ba2678a9.jpg",
+          "alt": "44365"
+        },
+        {
+          "path": "photos/9f80243b-ea4b-4de2-a7ff-5e3ac7022fed/9cd13706-5561-4382-ab5f-be621722ad73.jpg",
+          "alt": "45517"
         }
       ]
     }
